@@ -1,6 +1,6 @@
 module LocalTimeHelper
-  def local_time(time, options = nil)
-    time = utc_time(time)
+  def bc_local_time(time, options = nil)
+    time = bc_utc_time(time)
 
     options, format12 = extract_options_and_value(options, :format)
     format12, format24 = find_time_formats(format12)
@@ -11,14 +11,14 @@ module LocalTimeHelper
     time_tag time, time.strftime(format12), options
   end
 
-  def local_date(time, options = nil)
+  def bc_local_date(time, options = nil)
     options, format = extract_options_and_value(options, :format)
     options[:format] = format || LocalTime.default_date_format
-    local_time time, options
+    bc_local_time time, options
   end
 
-  def local_relative_time(time, options = nil)
-    time = utc_time(time)
+  def bc_local_relative_time(time, options = nil)
+    time = bc_utc_time(time)
     options, type = extract_options_and_value(options, :type)
 
     options[:data] ||= {}
@@ -27,13 +27,13 @@ module LocalTimeHelper
     time_tag time, time.strftime(LocalTime.default_time_format), options
   end
 
-  def local_time_ago(time, options = nil)
+  def bc_local_time_ago(time, options = nil)
     options, * = extract_options_and_value(options, :type)
     options[:type] = "time-ago"
-    local_relative_time time, options
+    bc_local_relative_time time, options
   end
 
-  def utc_time(time_or_date)
+  def bc_utc_time(time_or_date)
     if time_or_date.respond_to?(:in_time_zone)
       time_or_date.in_time_zone.utc
     else
